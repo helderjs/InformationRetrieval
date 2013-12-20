@@ -4,12 +4,19 @@ include 'vendor/autoload.php';
 use ZendSearch\Lucene;
 
 class Search {
-    public function search($query)
+
+    /**
+     * Executa uma busca nos indexes criados
+     *
+     * @param $query
+     */
+    public function query($query)
     {
         $dir = realpath(dirname(__FILE__)) . DIRECTORY_SEPARATOR . "data" .DIRECTORY_SEPARATOR;
         $jsonDir = $dir . "json";
         $indexDir = $dir . "index";
 
+        // Percorre os indices
         $files = scandir($jsonDir);
         foreach ($files as $file) {
             if ($file == '.' || $file == '..') {
@@ -17,10 +24,11 @@ class Search {
             }
 
             $indexName = substr($file, 0, -5);
-            $index = Lucene\Lucene::open($indexDir . DIRECTORY_SEPARATOR . $indexName);
+            $index = Lucene\Lucene::open($indexDir . DIRECTORY_SEPARATOR . $indexName); // Abre index
 
-            $hits = $index->find($query);
+            $hits = $index->find($query); // Executa query
 
+            // Lista resultados
             foreach ($hits as $hit) {
                 $document = $hit->getDocument();
 
@@ -35,4 +43,4 @@ class Search {
 
 $q = !empty($_GET['q']) ? $_GET['q'] : 'CBF';
 $sc = new Search();
-$sc->search($q);
+$sc->query($q);

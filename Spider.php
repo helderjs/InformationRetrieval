@@ -4,8 +4,18 @@ include 'vendor/autoload.php';
 use Symfony\Component\DomCrawler\Crawler;
 
 class Spider {
+    /**
+     * PHP Crawler objeto
+     *
+     * @var Goutte\Client
+     */
     protected  $goutte = null;
 
+    /**
+     * Lista de stop words
+     *
+     * @var array
+     */
     protected $stop_words = array(
         '/\ba\b/i', '/\bainda\b/i', '/\balem\b/i', '/\bambas\b/i', '/\bambos\b/i', '/\bantes\b/i',
         '/\bao\b/i', '/\baonde\b/i', '/\baos\b/i', '/\bapos\b/i', '/\baquele\b/i', '/\baqueles\b/i',
@@ -28,6 +38,11 @@ class Spider {
         '/\btodos\b/i', '/\btua\b/i', '/\btuas\b/i', '/\btudo\b/i', '/\bum\b/i', '/\buma\b/i', '/\bumas\b/i', '/\buns\b/i'
     );
 
+    /**
+     * Configuraçoes dos sites que serao scaneados
+     *
+     * @var array
+     */
     protected $websites = array(
         array(
             'name' => 'galaticosonline',
@@ -61,54 +76,85 @@ class Spider {
         ),
     );
 
+    /**
+     * Lista de links para scanear
+     *
+     * @var array
+     */
     protected $list = array();
 
+    /**
+     * Resultados do scaneamento
+     *
+     * @var array
+     */
     protected $result = array();
 
+    /**
+     * Executa o crawler
+     */
     public function run()
     {
-        $this->goutte = new Goutte\Client();
+        $this->goutte = new Goutte\Client(); // instancia lib do crawler
 
-        echo "<pre>";
+        //echo "<pre>";
         foreach ($this->websites as $website) {
-            $this->getList($website);
-            $this->scan($website);
-            $this->list = array();
+            $this->getList($website); // Pega lista de links
+            $this->scan($website); // Scaneia links da lista
+            $this->list = array(); // Limpa lista
         }
 
         //print_r($this->list);
-        print_r($this->result);
+        //print_r($this->result);
     }
 
+    /**
+     * Ler site e cria lista das paginas a serem scaneadas e capturadas
+     *
+     * @param $website
+     */
     public function getList($website)
     {
+        // para quantidade de paginas configuradas
         for ($page = $website['startPage']; $page < $website['paginationLimit']; $page++) {
+            // Monta url de destino
             $url = $website['baseUrl'] . str_replace('{page}', $page, $website['list']['endPoint']);
 
+            // Pega pagina
             $crawler = $this->goutte->request('GET', $url);
 
+            // Filtras no deseja
             $list = $crawler->filterXPath($website['list']['filter'])
                 ->each(
                     function ($node, $i) {
-                        return trim($node->attr('href'));
+                        return trim($node->attr('href')); // coloca na lista
                     }
                 );
 
-            $this->list = array_merge($this->list, $list);
+            $this->list = array_merge($this->list, $list); // junta links das paginas
         }
     }
 
+    /**
+     * Scaneia link e recupera informaçoes configuradas
+     *
+     * @param $website
+     */
     public function scan($website)
     {
+        // para cada link na lista
         foreach ($this->list as $list) {
-            $url = $list;
+            $url = $list; // Monta url
 
+            // Monta url
             if ($website['list']['typeLink'] == 'relative') {
                 $url = $website['baseUrl'] . $list;
             }
 
+            // Pega pagina
             $crawler = $this->goutte->request('GET', $url);
 
+            // Pega informaçoes da pagina
             $data = array();
             foreach ($website['scan'] as $key => $filter) {
                 $str = strip_tags($crawler->filterXPath($filter)->text());
@@ -116,10 +162,16 @@ class Spider {
                 $data[$key] = $str;
             }
 
+            // coloca na lista de resultados
             $this->result[$website['name']][] = $data;
         }
     }
 
+    /**
+     * Salva resultados em json
+     *
+     * @param null $dir
+     */
     public function save($dir = null) {
         if (is_null($dir)) {
             $dir = realpath(dirname(__FILE__)) . DIRECTORY_SEPARATOR . "data" .DIRECTORY_SEPARATOR . "json";
