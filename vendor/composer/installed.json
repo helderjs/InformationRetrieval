@@ -581,5 +581,89 @@
         "keywords": [
             "scraper"
         ]
+    },
+    {
+        "name": "zendframework/zend-stdlib",
+        "version": "2.2.5",
+        "version_normalized": "2.2.5.0",
+        "target-dir": "Zend/Stdlib",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zendframework/Component_ZendStdlib.git",
+            "reference": "f440ecfc828d61d620662a03987c8287e1e4801e"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/zendframework/Component_ZendStdlib/zipball/f440ecfc828d61d620662a03987c8287e1e4801e",
+            "reference": "f440ecfc828d61d620662a03987c8287e1e4801e",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "suggest": {
+            "zendframework/zend-eventmanager": "To support aggregate hydrator usage",
+            "zendframework/zend-servicemanager": "To support hydrator plugin manager usage"
+        },
+        "time": "2013-10-20 06:00:20",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.2-dev",
+                "dev-develop": "2.3-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Zend\\Stdlib\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "keywords": [
+            "stdlib",
+            "zf2"
+        ]
+    },
+    {
+        "name": "bojaspus/zendsearch",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/bojaspus/ZendSearch.git",
+            "reference": "08d7b5cd79e34045fdf86c7a69fd7de220730a38"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/bojaspus/ZendSearch/zipball/08d7b5cd79e34045fdf86c7a69fd7de220730a38",
+            "reference": "08d7b5cd79e34045fdf86c7a69fd7de220730a38",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3",
+            "zendframework/zend-stdlib": "2.*"
+        },
+        "time": "2012-11-09 22:02:00",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "ZendSearch": "library/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "description": "a general purpose text search engine written entirely in PHP 5",
+        "homepage": "http://packages.zendframework.com/",
+        "keywords": [
+            "lucene",
+            "zf2"
+        ]
     }
 ]

@@ -119,7 +119,18 @@ class Spider {
             $this->result[$website['name']][] = $data;
         }
     }
+
+    public function save($dir = null) {
+        if (is_null($dir)) {
+            $dir = realpath(dirname(__FILE__)) . DIRECTORY_SEPARATOR . "data" .DIRECTORY_SEPARATOR . "json";
+        }
+
+        foreach ($this->result as $entry => $data) {
+            file_put_contents($dir . DIRECTORY_SEPARATOR . $entry . ".json", json_encode($data));
+        }
+    }
 }
 
 $sp = new Spider();
 $sp->run();
+$sp->save();

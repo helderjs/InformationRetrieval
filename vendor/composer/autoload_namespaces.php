@@ -6,6 +6,8 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Zend\\Stdlib\\' => array($vendorDir . '/zendframework/zend-stdlib'),
+    'ZendSearch' => array($vendorDir . '/bojaspus/zendsearch/library'),
     'Symfony\\Component\\Process\\' => array($vendorDir . '/symfony/process'),
     'Symfony\\Component\\Finder\\' => array($vendorDir . '/symfony/finder'),
     'Symfony\\Component\\EventDispatcher\\' => array($vendorDir . '/symfony/event-dispatcher'),
@@ -16,5 +18,5 @@ return array(
     'Guzzle\\Parser' => array($vendorDir . '/guzzle/parser'),
     'Guzzle\\Http' => array($vendorDir . '/guzzle/http'),
     'Guzzle\\Common' => array($vendorDir . '/guzzle/common'),
-    'Goutte' => array($baseDir . '/', $vendorDir . '/fabpot/goutte'),
+    'Goutte' => array($vendorDir . '/fabpot/goutte'),
 );
